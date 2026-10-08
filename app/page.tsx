@@ -38,7 +38,7 @@ export default function Home() {
 
       <p className="line mt-6 max-w-lg leading-relaxed text-muted" style={step(5)}>
         Construo aplicações web completas, da API em Node.js à interface em React e Next.js. Sou
-        técnico em Desenvolvimento de Sistemas pelo SENAI e estudante de Engenharia de Software, em
+        técnico em  Análise e Desenvolvimento de Sistemas pelo SENAI e estudante de Engenharia de Software, em
         busca da primeira vaga como desenvolvedor júnior.
       </p>
 
