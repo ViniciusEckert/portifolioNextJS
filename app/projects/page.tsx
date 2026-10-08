@@ -11,13 +11,13 @@ type Mission = {
   highlights: string[];
   stack: string[];
   repos: [string, string][];
-  image: string | null; // ex.: "/projects/tcc.png"
+  image: string | null; // arquivo dentro de public/, ex.: "/tcc.png"
   demo: string | null; // ex.: "https://meu-projeto.vercel.app"
 };
 
 const missions: Mission[] = [
   {
-    code: "MISSION_01",
+    code: "PROJECT_01",
     title: "Sistema Bancário Administrativo (TCC)",
     year: "2025 – 2026",
     description:
@@ -27,37 +27,54 @@ const missions: Mission[] = [
       "Documentação interativa da API com Swagger (OpenAPI).",
       "Front-end em Next.js (App Router) com Server Actions, cache por tag com revalidateTag e tratamento de sessão expirada (401).",
     ],
-    stack: ["Next.js", "TypeScript", "Express", "Prisma", "SQLite", "JWT", "Swagger", "Tailwind CSS"],
+    stack: [
+      "Next.js",
+      "TypeScript",
+      "Express",
+      "Prisma",
+      "SQLite",
+      "JWT",
+      "Swagger",
+      "Tailwind CSS",
+    ],
     repos: [
       ["GITHUB BACK-END", "https://github.com/ViniciusEckert/TCC_backend"],
       ["GITHUB FRONT-END", "https://github.com/ViniciusEckert/TCC_Frontend"],
     ],
-    image: null,
+    image: "/tcc.png",
     demo: null,
   },
   {
-    code: "MISSION_02",
+    code: "PROJECT_02",
     title: "Aplicação em Tempo Real",
     year: "2025",
     description:
       "Aplicação full stack com comunicação bidirecional e sincronização de estado via WebSockets.",
     highlights: [
-      "Servidor REST e WebSockets com Express 5 e Socket.io.",
-      "Interface em Next.js com React 19 e Tailwind CSS v4, atualizada em tempo real com socket.io-client, sem polling.",
+      "Servidor REST e WebSockets com Express e Socket.io.",
+      "Interface em Next.js com React e Tailwind CSS, atualizada em tempo real com socket.io-client, sem polling.",
     ],
-    stack: ["Next.js", "React 19", "Socket.io", "Express 5", "TypeScript", "Tailwind CSS"],
+    stack: [
+      "Next.js",
+      "React",
+      "Socket.io",
+      "Express",
+      "TypeScript",
+      "Tailwind CSS",
+    ],
     repos: [
       ["GITHUB BACK-END", "https://github.com/ViniciusEckert/socket_back"],
       ["GITHUB FRONT-END", "https://github.com/ViniciusEckert/socket_client"],
     ],
-    image: null,
+    image: "/socketIO.png",
     demo: null,
   },
   {
-    code: "MISSION_03",
+    code: "PROJECT_03",
     title: "Suíte de Testes de Integração",
     year: "2025",
-    description: "API REST com testes de ponta a ponta, banco de dados isolado e dados sintéticos.",
+    description:
+      "API REST com testes de ponta a ponta, banco de dados isolado e dados sintéticos.",
     highlights: [
       "Testes de rotas e regras de negócio com Supertest e o test runner nativo do Node.js.",
       "Migrações Prisma executadas em um banco de testes isolado (.env.test) antes de cada rodada.",
@@ -65,7 +82,7 @@ const missions: Mission[] = [
     ],
     stack: ["Node.js", "TypeScript", "Supertest", "Prisma", "Faker.js"],
     repos: [["GITHUB", "https://github.com/ViniciusEckert/testes_De_Sistema"]],
-    image: null,
+    image: "/faker.png",
     demo: null,
   },
 ];
@@ -73,11 +90,15 @@ const missions: Mission[] = [
 export default function Projects() {
   return (
     <section>
-      <p className="font-pixel text-xs tracking-widest text-cyan">{"// PROJECTS"}</p>
-      <h1 className="mt-2 font-pixel text-2xl font-bold sm:text-3xl">MISSION FILES</h1>
+      <p className="font-pixel text-xs tracking-widest text-cyan">
+        {"// PROJECTS"}
+      </p>
+      <h1 className="mt-2 font-pixel text-2xl font-bold sm:text-3xl">
+        MISSION FILES
+      </h1>
       <p className="mt-4 max-w-xl leading-relaxed text-muted">
-        Aplicações que construí durante a formação, todas com código aberto no GitHub. Cada arquivo
-        abaixo é uma missão concluída.
+        Aplicações que construí durante a formação, todas com código aberto no
+        GitHub. Cada arquivo abaixo é uma missão concluída.
       </p>
 
       <div className="mt-10 space-y-10">
@@ -91,16 +112,22 @@ export default function Projects() {
               }}
             >
               {m.image && (
-                <Image
-                  src={m.image}
-                  alt={`Preview do projeto ${m.title}`}
-                  fill
-                  sizes="(min-width: 896px) 832px, 100vw"
-                  className="object-cover [image-rendering:pixelated]"
-                />
+                <>
+                  <Image
+                    src={m.image}
+                    alt={`Preview do projeto ${m.title}`}
+                    fill
+                    unoptimized
+                    sizes="(min-width: 896px) 832px, 100vw"
+                    className="object-cover [image-rendering:pixelated]"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-deep via-deep/50 to-transparent" />
+                </>
               )}
-              <span className="relative font-pixel text-xs tracking-widest text-fg">{m.code}</span>
-              <span className="relative border border-cyan bg-deep/80 px-2 py-1 font-pixel text-[10px] tracking-widest text-cyan">
+              <span className="relative border border-pink bg-deep/90 px-2 py-1 font-pixel text-xs tracking-widest text-fg">
+                {m.code}
+              </span>
+              <span className="relative border border-cyan bg-deep/90 px-2 py-1 font-pixel text-[10px] tracking-widest text-cyan">
                 COMPLETED
               </span>
             </div>
@@ -133,12 +160,23 @@ export default function Projects() {
 
               <div className="mt-6 flex flex-wrap gap-4">
                 {m.repos.map(([label, href]) => (
-                  <a key={href} href={href} target="_blank" rel="noreferrer" className="btn">
+                  <a
+                    key={href}
+                    href={href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="btn"
+                  >
                     {label}
                   </a>
                 ))}
                 {m.demo && (
-                  <a href={m.demo} target="_blank" rel="noreferrer" className="btn btn-solid">
+                  <a
+                    href={m.demo}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="btn btn-solid"
+                  >
                     DEMO
                   </a>
                 )}

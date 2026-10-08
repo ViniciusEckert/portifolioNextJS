@@ -2,6 +2,18 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = { title: "About" };
 
+// Regenera a página no máximo uma vez por dia, para o período atualizar sozinho.
+export const revalidate = 86400;
+
+// Janeiro e agosto marcam a troca de período. Agosto/2026 = 2º período.
+function getPeriod() {
+  const now = new Date(
+    new Date().toLocaleString("en-US", { timeZone: "America/Sao_Paulo" })
+  );
+  const half = now.getFullYear() * 2 + (now.getMonth() >= 7 ? 1 : 0);
+  return Math.min(8, Math.max(2, half - 4051));
+}
+
 const profile = [
   ["CLASS", "Full Stack Developer"],
   ["BASE", "Curitiba, PR"],
@@ -18,15 +30,15 @@ const inventory = [
   { group: "TOOLS", items: ["Git", "GitHub", "Swagger", "ESLint", "VS Code"] },
 ];
 
-const education = [
+const getEducation = () => [
   {
     done: false,
     title: "Engenharia de Software — UniSENAI",
-    detail: "2º de 8 períodos. Conclusão prevista para 2029.",
+    detail: `${getPeriod()}º de 8 períodos. Conclusão prevista para 2029.`,
   },
   {
     done: true,
-    title: "Técnico em Desenvolvimento de Sistemas — SENAI",
+    title: "Técnico em Análise e Desenvolvimento de Sistemas — SENAI",
     detail: "Instituto Forja. Março de 2025 a agosto de 2026.",
   },
 ];
@@ -35,6 +47,8 @@ const tag = "font-pixel text-xs tracking-widest text-cyan";
 const heading = "mt-2 font-pixel text-2xl font-bold sm:text-3xl";
 
 export default function About() {
+  const education = getEducation();
+
   return (
     <div className="space-y-20">
       <section>
@@ -43,7 +57,7 @@ export default function About() {
 
         <div className="mt-8 grid gap-8 md:grid-cols-[1fr_16rem]">
           <p className="max-w-xl leading-relaxed text-muted">
-            Sou técnico em Desenvolvimento de Sistemas pelo SENAI e estudante de Engenharia de
+            Sou técnico em  Análise e Desenvolvimento de Sistemas pelo SENAI e estudante de Engenharia de
             Software no UniSENAI. Gosto de construir aplicações web completas e desacopladas, com
             API em Node.js e TypeScript e interface em React e Next.js. No dia a dia me preocupo com
             arquitetura, Clean Code e testes automatizados, e estou em busca da minha primeira vaga
