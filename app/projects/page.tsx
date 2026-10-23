@@ -1,23 +1,44 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 
 export const metadata: Metadata = { title: "Projects" };
 
 type Mission = {
   code: string;
+  status: "COMPLETED" | "IN PROGRESS";
   title: string;
   year: string;
   description: string;
   highlights: string[];
   stack: string[];
   repos: [string, string][];
+  href?: string; // página própria do projeto, ex.: "/projects/nestjs"
   image: string | null; // arquivo dentro de public/, ex.: "/tcc.png"
   demo: string | null; // ex.: "https://meu-projeto.vercel.app"
 };
 
 const missions: Mission[] = [
   {
-    code: "PROJECT_01",
+    code: "MISSION_04",
+    status: "IN PROGRESS",
+    title: "Sistema de Atendimento (NestJS)",
+    year: "2026 – em andamento",
+    description:
+      "Backend de atendimento com contatos, conversas e mensagens, feito para aprender a stack moderna de back-end com NestJS, Prisma e PostgreSQL.",
+    highlights: [
+      "Endpoint que simula o recebimento de mensagens, como um webhook, e notificação em tempo real por WebSocket.",
+      "Autenticação JWT, testes de integração, Docker, cache com Redis e CI no GitHub Actions no roadmap.",
+    ],
+    stack: ["NestJS", "TypeScript", "Prisma", "PostgreSQL"],
+    repos: [["GITHUB", "https://github.com/ViniciusEckert/projetoNestjs"]],
+    href: "/projects/nestjs",
+    image: null,
+    demo: null,
+  },
+  {
+    code: "MISSION_01",
+    status: "COMPLETED",
     title: "Sistema Bancário Administrativo (TCC)",
     year: "2025 – 2026",
     description:
@@ -27,16 +48,7 @@ const missions: Mission[] = [
       "Documentação interativa da API com Swagger (OpenAPI).",
       "Front-end em Next.js (App Router) com Server Actions, cache por tag com revalidateTag e tratamento de sessão expirada (401).",
     ],
-    stack: [
-      "Next.js",
-      "TypeScript",
-      "Express",
-      "Prisma",
-      "SQLite",
-      "JWT",
-      "Swagger",
-      "Tailwind CSS",
-    ],
+    stack: ["Next.js", "TypeScript", "Express", "Prisma", "SQLite", "JWT", "Swagger", "Tailwind CSS"],
     repos: [
       ["GITHUB BACK-END", "https://github.com/ViniciusEckert/TCC_backend"],
       ["GITHUB FRONT-END", "https://github.com/ViniciusEckert/TCC_Frontend"],
@@ -45,36 +57,30 @@ const missions: Mission[] = [
     demo: null,
   },
   {
-    code: "PROJECT_02",
+    code: "MISSION_02",
+    status: "COMPLETED",
     title: "Aplicação em Tempo Real",
     year: "2025",
     description:
       "Aplicação full stack com comunicação bidirecional e sincronização de estado via WebSockets.",
     highlights: [
-      "Servidor REST e WebSockets com Express e Socket.io.",
-      "Interface em Next.js com React e Tailwind CSS, atualizada em tempo real com socket.io-client, sem polling.",
+      "Servidor REST e WebSockets com Express 5 e Socket.io.",
+      "Interface em Next.js com React 19 e Tailwind CSS v4, atualizada em tempo real com socket.io-client, sem polling.",
     ],
-    stack: [
-      "Next.js",
-      "React",
-      "Socket.io",
-      "Express",
-      "TypeScript",
-      "Tailwind CSS",
-    ],
+    stack: ["Next.js", "React 19", "Socket.io", "Express 5", "TypeScript", "Tailwind CSS"],
     repos: [
       ["GITHUB BACK-END", "https://github.com/ViniciusEckert/socket_back"],
       ["GITHUB FRONT-END", "https://github.com/ViniciusEckert/socket_client"],
     ],
-    image: "/socketIO.png",
+    image: "/socket.png",
     demo: null,
   },
   {
-    code: "PROJECT_03",
+    code: "MISSION_03",
+    status: "COMPLETED",
     title: "Suíte de Testes de Integração",
     year: "2025",
-    description:
-      "API REST com testes de ponta a ponta, banco de dados isolado e dados sintéticos.",
+    description: "API REST com testes de ponta a ponta, banco de dados isolado e dados sintéticos.",
     highlights: [
       "Testes de rotas e regras de negócio com Supertest e o test runner nativo do Node.js.",
       "Migrações Prisma executadas em um banco de testes isolado (.env.test) antes de cada rodada.",
@@ -90,100 +96,110 @@ const missions: Mission[] = [
 export default function Projects() {
   return (
     <section>
-      <p className="font-pixel text-xs tracking-widest text-cyan">
-        {"// PROJECTS"}
-      </p>
-      <h1 className="mt-2 font-pixel text-2xl font-bold sm:text-3xl">
-        MISSION FILES
-      </h1>
+      <p className="font-pixel text-xs tracking-widest text-cyan">{"// PROJECTS"}</p>
+      <h1 className="mt-2 font-pixel text-2xl font-bold sm:text-3xl">MISSION FILES</h1>
       <p className="mt-4 max-w-xl leading-relaxed text-muted">
-        Aplicações que construí durante a formação, todas com código aberto no
-        GitHub. Cada arquivo abaixo é uma missão concluída.
+        Aplicações que construí durante a formação, todas com código aberto no GitHub. No topo está a
+        missão ativa do momento, e abaixo as concluídas.
       </p>
 
       <div className="mt-10 space-y-10">
-        {missions.map((m) => (
-          <article key={m.code} className="px overflow-hidden">
-            <div
-              className="relative flex h-40 items-end justify-between border-b-2 border-darkred p-4 sm:h-48"
-              style={{
-                background:
-                  "repeating-linear-gradient(0deg, transparent 0 7px, rgba(255,46,136,.07) 7px 8px), repeating-linear-gradient(90deg, transparent 0 7px, rgba(255,46,136,.07) 7px 8px), linear-gradient(135deg, #a8002a 0%, #111522 70%)",
-              }}
+        {missions.map((m) => {
+          const active = m.status === "IN PROGRESS";
+          return (
+            <article
+              key={m.code}
+              className="px overflow-hidden"
+              style={active ? { borderColor: "var(--pink)", boxShadow: "4px 4px 0 var(--pink)" } : undefined}
             >
-              {m.image && (
-                <>
-                  <Image
-                    src={m.image}
-                    alt={`Preview do projeto ${m.title}`}
-                    fill
-                    unoptimized
-                    sizes="(min-width: 896px) 832px, 100vw"
-                    className="object-cover [image-rendering:pixelated]"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-deep via-deep/50 to-transparent" />
-                </>
-              )}
-              <span className="relative border border-pink bg-deep/90 px-2 py-1 font-pixel text-xs tracking-widest text-fg">
-                {m.code}
-              </span>
-              <span className="relative border border-cyan bg-deep/90 px-2 py-1 font-pixel text-[10px] tracking-widest text-cyan">
-                COMPLETED
-              </span>
-            </div>
-
-            <div className="p-5 sm:p-6">
-              <div className="flex flex-wrap items-baseline justify-between gap-2">
-                <h2 className="text-xl font-semibold">{m.title}</h2>
-                <span className="font-mono text-xs text-muted">{m.year}</span>
-              </div>
-              <p className="mt-2 text-muted">{m.description}</p>
-
-              <ul className="mt-5 space-y-2 text-sm leading-relaxed">
-                {m.highlights.map((h) => (
-                  <li key={h}>
-                    <span className="font-mono text-pink">&gt;</span> {h}
-                  </li>
-                ))}
-              </ul>
-
-              <ul className="mt-5 flex flex-wrap gap-2 font-mono text-xs">
-                {m.stack.map((s) => (
-                  <li
-                    key={s}
-                    className="border border-line bg-deep px-2.5 py-1 text-muted transition-colors hover:border-pink hover:text-pink"
-                  >
-                    {s}
-                  </li>
-                ))}
-              </ul>
-
-              <div className="mt-6 flex flex-wrap gap-4">
-                {m.repos.map(([label, href]) => (
-                  <a
-                    key={href}
-                    href={href}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="btn"
-                  >
-                    {label}
-                  </a>
-                ))}
-                {m.demo && (
-                  <a
-                    href={m.demo}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="btn btn-solid"
-                  >
-                    DEMO
-                  </a>
+              <div
+                className="relative flex h-40 items-end justify-between border-b-2 border-darkred p-4 sm:h-48"
+                style={{
+                  background:
+                    "repeating-linear-gradient(0deg, transparent 0 7px, rgba(255,46,136,.07) 7px 8px), repeating-linear-gradient(90deg, transparent 0 7px, rgba(255,46,136,.07) 7px 8px), linear-gradient(135deg, #a8002a 0%, #111522 70%)",
+                }}
+              >
+                {m.image && (
+                  <>
+                    <Image
+                      src={m.image}
+                      alt={`Preview do projeto ${m.title}`}
+                      fill
+                      unoptimized
+                      sizes="(min-width: 896px) 832px, 100vw"
+                      className="object-cover [image-rendering:pixelated]"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-deep via-deep/50 to-transparent" />
+                  </>
                 )}
+                {!m.image && active && (
+                  <span className="blink absolute inset-0 flex items-center justify-center font-pixel text-xs tracking-widest text-pink/80">
+                    PREVIEW LOADING...
+                  </span>
+                )}
+                <span className="relative border border-pink bg-deep/90 px-2 py-1 font-pixel text-xs tracking-widest text-fg">
+                  {m.code}
+                </span>
+                <span
+                  className={`relative border bg-deep/90 px-2 py-1 font-pixel text-[10px] tracking-widest ${
+                    active ? "border-pink text-pink" : "border-cyan text-cyan"
+                  }`}
+                >
+                  {active && <span className="blink mr-2 inline-block h-2 w-2 bg-pink" />}
+                  {m.status}
+                </span>
               </div>
-            </div>
-          </article>
-        ))}
+
+              <div className="p-5 sm:p-6">
+                {active && (
+                  <p className="glow mb-2 font-pixel text-xs tracking-widest text-pink">ACTIVE MISSION</p>
+                )}
+                <div className="flex flex-wrap items-baseline justify-between gap-2">
+                  <h2 className={active ? "text-2xl font-semibold" : "text-xl font-semibold"}>{m.title}</h2>
+                  <span className="font-mono text-xs text-muted">{m.year}</span>
+                </div>
+                <p className="mt-2 text-muted">{m.description}</p>
+
+                <ul className="mt-5 space-y-2 text-sm leading-relaxed">
+                  {m.highlights.map((h) => (
+                    <li key={h}>
+                      <span className="font-mono text-pink">&gt;</span> {h}
+                    </li>
+                  ))}
+                </ul>
+
+                <ul className="mt-5 flex flex-wrap gap-2 font-mono text-xs">
+                  {m.stack.map((s) => (
+                    <li
+                      key={s}
+                      className="border border-line bg-deep px-2.5 py-1 text-muted transition-colors hover:border-pink hover:text-pink"
+                    >
+                      {s}
+                    </li>
+                  ))}
+                </ul>
+
+                <div className="mt-6 flex flex-wrap gap-4">
+                  {m.href && (
+                    <Link href={m.href} className="btn btn-solid">
+                      VIEW MISSION FILE
+                    </Link>
+                  )}
+                  {m.repos.map(([label, href]) => (
+                    <a key={href} href={href} target="_blank" rel="noreferrer" className="btn">
+                      {label}
+                    </a>
+                  ))}
+                  {m.demo && (
+                    <a href={m.demo} target="_blank" rel="noreferrer" className="btn btn-solid">
+                      DEMO
+                    </a>
+                  )}
+                </div>
+              </div>
+            </article>
+          );
+        })}
       </div>
     </section>
   );

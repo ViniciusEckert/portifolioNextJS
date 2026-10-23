@@ -10,7 +10,7 @@ const hud = [
 
 export default function Home() {
   return (
-    <section className="relative isolate pt-6 sm:pt-16">
+    <section className="relative isolate pb-8 pt-6 sm:pt-16">
       <div className="sun" aria-hidden="true" />
 
       <p className="font-pixel text-xs tracking-wide text-cyan">
@@ -32,20 +32,33 @@ export default function Home() {
       >
         VINICIUS ECKERT
       </h1>
-      <p className="line mt-4 font-pixel text-sm tracking-widest text-red sm:text-base" style={step(4)}>
+      <p
+        className="line mt-4 font-pixel text-sm tracking-widest text-red sm:text-base"
+        style={step(4)}
+      >
         FULL STACK DEVELOPER
       </p>
 
-      <p className="line mt-6 max-w-lg leading-relaxed text-muted" style={step(5)}>
-        Construo aplicações web completas, da API em Node.js à interface em React e Next.js. Sou
-        técnico em  Análise e Desenvolvimento de Sistemas pelo SENAI e estudante de Engenharia de Software, em
-        busca da primeira vaga como desenvolvedor júnior.
+      <p
+        className="line mt-6 max-w-lg leading-relaxed text-muted"
+        style={step(5)}
+      >
+        Construo aplicações web completas, da API em Node.js à interface em
+        React e Next.js. Sou técnico em Análise e Desenvolvimento de Sistemas
+        pelo SENAI e estudante de Engenharia de Software, em busca da primeira
+        vaga como desenvolvedor júnior.
       </p>
 
       <div className="line mt-8 flex flex-wrap gap-4" style={step(6)}>
-        <Link href="/projects" className="btn btn-solid">PROJECTS</Link>
-        <Link href="/about" className="btn">ABOUT ME</Link>
-        <Link href="/contact" className="btn">CONTACT</Link>
+        <Link href="/projects" className="btn btn-solid">
+          PROJECTS
+        </Link>
+        <Link href="/about" className="btn">
+          ABOUT ME
+        </Link>
+        <Link href="/contact" className="btn">
+          CONTACT
+        </Link>
       </div>
 
       <dl
@@ -59,6 +72,17 @@ export default function Home() {
           </div>
         ))}
       </dl>
+      <Link
+        href="/404"
+        prefetch={false}
+        aria-label="Página secreta"
+        className="group absolute bottom-0 right-0 flex items-center gap-2 p-2 font-pixel text-[10px] tracking-widest"
+      >
+        <span className="text-pink opacity-0 transition-opacity duration-100 group-hover:opacity-100 group-focus-visible:opacity-100">
+          ERR_404
+        </span>
+        <span className="h-2 w-2 bg-line transition-colors group-hover:bg-pink group-hover:shadow-[0_0_8px_rgba(255,46,136,0.8)] group-focus-visible:bg-pink" />
+      </Link>
     </section>
   );
 }
