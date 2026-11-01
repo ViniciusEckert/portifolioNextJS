@@ -43,6 +43,70 @@ export default function NestProject() {
   const doneCount = roadmap.filter(([, d]) => d).length;
 
   return (
+    <>
+    <input
+      id="skip-login"
+      type="checkbox"
+      aria-label="Pular animação de login"
+      className="skip-login sr-only"
+    />
+
+    <div className="login-screen" aria-hidden="true">
+      <div className="px w-full max-w-sm p-6 sm:p-8">
+        <p className="font-pixel text-xs tracking-widest text-cyan">{"// MISSION_04"}</p>
+        <h2 className="glow mt-2 font-pixel text-2xl font-bold">SECURE ACCESS</h2>
+
+        <div className="mt-8 space-y-5 font-mono text-sm">
+          <div>
+            <p className="font-pixel text-[10px] tracking-widest text-muted">USER ID</p>
+            <p className="mt-2 border border-line bg-deep px-3 py-2.5">
+              <span
+                className="field-type"
+                style={{ "--n": 15, "--t": "1.2s", "--d": "0.6s" } as React.CSSProperties}
+              >
+                VINICIUS_ECKERT
+              </span>
+              <span className="cursor ml-0.5" />
+            </p>
+          </div>
+
+          <div>
+            <p className="font-pixel text-[10px] tracking-widest text-muted">PASSWORD</p>
+            <p className="mt-2 border border-line bg-deep px-3 py-2.5">
+              <span
+                className="field-type"
+                style={{ "--n": 11, "--t": "0.9s", "--d": "2s" } as React.CSSProperties}
+              >
+                ***********
+              </span>
+            </p>
+          </div>
+        </div>
+
+        <div className="mt-6">
+          <span className="btn login-press">LOGIN</span>
+        </div>
+
+        <div className="mt-6 space-y-1 font-mono text-xs">
+          <p className="at text-muted" style={{ "--d": "3.3s" } as React.CSSProperties}>
+            &gt; AUTHENTICATING ...
+          </p>
+          <p
+            className="at font-pixel tracking-widest text-cyan"
+            style={{ "--d": "3.9s" } as React.CSSProperties}
+          >
+            &gt; ACCESS GRANTED
+          </p>
+        </div>
+      </div>
+
+      <label
+        htmlFor="skip-login"
+        className="absolute bottom-6 right-6 font-pixel text-[10px] tracking-widest text-muted hover:text-pink"
+      >
+        SKIP
+      </label>
+    </div>
     <div className="space-y-16">
       <section>
         <Link
@@ -167,5 +231,6 @@ export default function NestProject() {
         </p>
       </section>
     </div>
+    </>
   );
 }

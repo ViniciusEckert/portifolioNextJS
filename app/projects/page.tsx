@@ -93,6 +93,21 @@ const missions: Mission[] = [
   },
 ];
 
+const lock = (
+  <svg
+    viewBox="0 0 9 11"
+    shapeRendering="crispEdges"
+    aria-hidden="true"
+    className="mr-2 -mt-0.5 inline-block h-4 w-[13px]"
+    fill="currentColor"
+  >
+    <path
+      fillRule="evenodd"
+      d="M2 0h5v1H2zM2 1h1v3H2zM6 1h1v3H6zM0 4h9v7H0zM4 6h1v3H4z"
+    />
+  </svg>
+);
+
 export default function Projects() {
   return (
     <section>
@@ -182,6 +197,7 @@ export default function Projects() {
                 <div className="mt-6 flex flex-wrap gap-4">
                   {m.href && (
                     <Link href={m.href} className="btn btn-solid">
+                      {lock}
                       VIEW MISSION FILE
                     </Link>
                   )}
