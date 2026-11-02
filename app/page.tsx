@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
@@ -28,6 +28,15 @@ export default function Home() {
   const [phase, setPhase] = useState(0);
   const cut = phase >= 2;
 
+  const sound = useRef<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    const audio = new Audio("/parry.mp3");
+    audio.preload = "auto";
+    audio.volume = 0.6;
+    sound.current = audio;
+  }, []);
+
   function slash(e: React.MouseEvent<HTMLAnchorElement>, href: string) {
     if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
     e.preventDefault();
@@ -36,6 +45,12 @@ export default function Home() {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       router.push(href);
       return;
+    }
+
+    const audio = sound.current;
+    if (audio) {
+      audio.currentTime = 0;
+      audio.play().catch(() => {});
     }
 
     setPhase(1);

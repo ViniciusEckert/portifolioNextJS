@@ -1,7 +1,7 @@
-import type { Metadata } from "next";
-import Link from "next/link";
+"use client";
 
-export const metadata: Metadata = { title: "Sistema de Atendimento (NestJS)" };
+import { useEffect, useRef } from "react";
+import Link from "next/link";
 
 // [etapa, concluída?]. Para avançar o projeto, troque false por true.
 const roadmap: [string, boolean][] = [
@@ -18,7 +18,16 @@ const roadmap: [string, boolean][] = [
 
 // Tecnologias já em uso. Quando uma planejada for implementada, mova para cá.
 const stack = ["NestJS", "TypeScript", "Prisma", "PostgreSQL"];
-const planned = ["JWT", "Swagger", "Socket.io", "Jest", "Supertest", "Docker", "Redis", "GitHub Actions"];
+const planned = [
+  "JWT",
+  "Swagger",
+  "Socket.io",
+  "Jest",
+  "Supertest",
+  "Docker",
+  "Redis",
+  "GitHub Actions",
+];
 
 const modules = [
   ["AUTH", "Cadastro e login com JWT."],
@@ -30,207 +39,293 @@ const modules = [
 ];
 
 const decisions = [
-  ["Guard próprio com JwtService", "em vez do Passport, para entender o fluxo de autenticação por dentro."],
-  ["Prisma 7 com driver adapter", "usando @prisma/adapter-pg e pg, com o client gerado dentro do projeto."],
-  ["Banco de teste separado", "um .env.test com outro banco, para os testes nunca tocarem nos dados de desenvolvimento."],
-  ["Variáveis de ambiente validadas", "a aplicação não inicia se algo essencial estiver faltando no .env."],
+  [
+    "Guard próprio com JwtService",
+    "em vez do Passport, para entender o fluxo de autenticação por dentro.",
+  ],
+  [
+    "Prisma 7 com driver adapter",
+    "usando @prisma/adapter-pg e pg, com o client gerado dentro do projeto.",
+  ],
+  [
+    "Banco de teste separado",
+    "um .env.test com outro banco, para os testes nunca tocarem nos dados de desenvolvimento.",
+  ],
+  [
+    "Variáveis de ambiente validadas",
+    "a aplicação não inicia se algo essencial estiver faltando no .env.",
+  ],
 ];
 
 const tag = "font-pixel text-xs tracking-widest text-cyan";
 const heading = "mt-2 font-pixel text-xl font-bold sm:text-2xl";
 
 export default function NestProject() {
+  const stop = useRef<() => void>(() => {});
+
+  useEffect(() => {
+    // Mantém o título da aba, já que o metadata saiu
+    document.title = "Sistema de Atendimento (NestJS) | Vinicius Eckert";
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const user = new Audio("/typing.mp3");
+    const pass = new Audio("/typing.mp3");
+    const login = new Audio("/login.mp3");
+    [user, pass, login].forEach((a) => {
+      a.preload = "auto";
+      a.volume = 0.5;
+    });
+
+    const timers: ReturnType<typeof setTimeout>[] = [];
+    const at = (ms: number, fn: () => void) => timers.push(setTimeout(fn, ms));
+
+    at(600, () => user.play().catch(() => {}));
+    at(1800, () => user.pause());
+    at(2000, () => pass.play().catch(() => {}));
+    at(2900, () => pass.pause());
+    at(3100, () => login.play().catch(() => {}));
+
+    const stopAll = () => {
+      timers.forEach(clearTimeout);
+      [user, pass, login].forEach((a) => a.pause());
+    };
+    stop.current = stopAll;
+    return stopAll;
+  }, []);
+
   const doneCount = roadmap.filter(([, d]) => d).length;
 
   return (
     <>
-    <input
-      id="skip-login"
-      type="checkbox"
-      aria-label="Pular animação de login"
-      className="skip-login sr-only"
-    />
+      <input
+        id="skip-login"
+        type="checkbox"
+        aria-label="Pular animação de login"
+        className="skip-login sr-only"
+        onChange={(e) => {
+          if (e.target.checked) stop.current();
+        }}
+      />
 
-    <div className="login-screen" aria-hidden="true">
-      <div className="px w-full max-w-sm p-6 sm:p-8">
-        <p className="font-pixel text-xs tracking-widest text-cyan">{"// MISSION_04"}</p>
-        <h2 className="glow mt-2 font-pixel text-2xl font-bold">SECURE ACCESS</h2>
+      <div className="login-screen" aria-hidden="true">
+        <div className="px w-full max-w-sm p-6 sm:p-8">
+          <p className="font-pixel text-xs tracking-widest text-cyan">
+            {"// MISSION_04"}
+          </p>
+          <h2 className="glow mt-2 font-pixel text-2xl font-bold">
+            SECURE ACCESS
+          </h2>
 
-        <div className="mt-8 space-y-5 font-mono text-sm">
-          <div>
-            <p className="font-pixel text-[10px] tracking-widest text-muted">USER ID</p>
-            <p className="mt-2 border border-line bg-deep px-3 py-2.5">
-              <span
-                className="field-type"
-                style={{ "--n": 15, "--t": "1.2s", "--d": "0.6s" } as React.CSSProperties}
-              >
-                VINICIUS_ECKERT
-              </span>
-              <span className="cursor ml-0.5" />
-            </p>
+          <div className="mt-8 space-y-5 font-mono text-sm">
+            <div>
+              <p className="font-pixel text-[10px] tracking-widest text-muted">
+                USER ID
+              </p>
+              <p className="mt-2 border border-line bg-deep px-3 py-2.5">
+                <span
+                  className="field-type"
+                  style={
+                    {
+                      "--n": 15,
+                      "--t": "1.2s",
+                      "--d": "0.6s",
+                    } as React.CSSProperties
+                  }
+                >
+                  VINICIUS_ECKERT
+                </span>
+                <span className="cursor ml-0.5" />
+              </p>
+            </div>
+
+            <div>
+              <p className="font-pixel text-[10px] tracking-widest text-muted">
+                PASSWORD
+              </p>
+              <p className="mt-2 border border-line bg-deep px-3 py-2.5">
+                <span
+                  className="field-type"
+                  style={
+                    {
+                      "--n": 11,
+                      "--t": "0.9s",
+                      "--d": "2s",
+                    } as React.CSSProperties
+                  }
+                >
+                  ***********
+                </span>
+              </p>
+            </div>
           </div>
 
-          <div>
-            <p className="font-pixel text-[10px] tracking-widest text-muted">PASSWORD</p>
-            <p className="mt-2 border border-line bg-deep px-3 py-2.5">
-              <span
-                className="field-type"
-                style={{ "--n": 11, "--t": "0.9s", "--d": "2s" } as React.CSSProperties}
-              >
-                ***********
-              </span>
+          <div className="mt-6">
+            <span className="btn login-press">LOGIN</span>
+          </div>
+
+          <div className="mt-6 space-y-1 font-mono text-xs">
+            <p
+              className="at text-muted"
+              style={{ "--d": "3.3s" } as React.CSSProperties}
+            >
+              &gt; AUTHENTICATING ...
+            </p>
+            <p
+              className="at font-pixel tracking-widest text-cyan"
+              style={{ "--d": "3.9s" } as React.CSSProperties}
+            >
+              &gt; ACCESS GRANTED
             </p>
           </div>
         </div>
 
-        <div className="mt-6">
-          <span className="btn login-press">LOGIN</span>
-        </div>
-
-        <div className="mt-6 space-y-1 font-mono text-xs">
-          <p className="at text-muted" style={{ "--d": "3.3s" } as React.CSSProperties}>
-            &gt; AUTHENTICATING ...
-          </p>
-          <p
-            className="at font-pixel tracking-widest text-cyan"
-            style={{ "--d": "3.9s" } as React.CSSProperties}
-          >
-            &gt; ACCESS GRANTED
-          </p>
-        </div>
+        <label
+          htmlFor="skip-login"
+          className="absolute bottom-6 right-6 font-pixel text-[10px] tracking-widest text-muted hover:text-pink"
+        >
+          SKIP
+        </label>
       </div>
 
-      <label
-        htmlFor="skip-login"
-        className="absolute bottom-6 right-6 font-pixel text-[10px] tracking-widest text-muted hover:text-pink"
-      >
-        SKIP
-      </label>
-    </div>
-    <div className="space-y-16">
-      <section>
-        <Link
-          href="/projects"
-          className="font-pixel text-xs tracking-widest text-muted transition-colors hover:text-pink"
-        >
-          &lt; BACK TO PROJECTS
-        </Link>
-
-        <div className="mt-8 flex flex-wrap items-center gap-3">
-          <span className="border border-pink bg-deep px-2 py-1 font-pixel text-xs tracking-widest">
-            MISSION_04
-          </span>
-          <span className="border border-pink px-2 py-1 font-pixel text-[10px] tracking-widest text-pink">
-            <span className="blink mr-2 inline-block h-2 w-2 bg-pink" />
-            IN PROGRESS
-          </span>
-        </div>
-
-        <p className="glow mt-6 font-pixel text-xs tracking-widest text-pink">ACTIVE MISSION</p>
-        <h1 className="mt-2 text-3xl font-bold sm:text-4xl">Sistema de Atendimento (NestJS)</h1>
-        <p className="mt-4 max-w-2xl leading-relaxed text-muted">
-          Backend de atendimento com contatos, conversas e mensagens, feito para aprender a stack
-          moderna de back-end. Um endpoint simula o recebimento de mensagens, como um webhook, e os
-          clientes conectados são avisados em tempo real por WebSocket. O projeto está no começo e
-          este arquivo mostra o que já existe e o que vem pela frente.
-        </p>
-
-        <div className="mt-8 flex flex-wrap gap-4">
-          <a
-            href="https://github.com/ViniciusEckert/projetoNestjs"
-            target="_blank"
-            rel="noreferrer"
-            className="btn btn-solid"
+      <div className="space-y-16">
+        <section>
+          <Link
+            href="/projects"
+            className="font-pixel text-xs tracking-widest text-muted transition-colors hover:text-pink"
           >
-            GITHUB
-          </a>
-        </div>
-      </section>
+            &lt; BACK TO PROJECTS
+          </Link>
 
-      <section>
-        <p className={tag}>{"// PROGRESS"}</p>
-        <h2 className={heading}>ROADMAP</h2>
-
-        <div className="px mt-6 p-5">
-          <p className="flex justify-between font-pixel text-[10px] tracking-widest">
-            <span className="text-pink">MISSION PROGRESS</span>
-            <span className="text-muted">
-              {doneCount}/{roadmap.length} COMPLETE
+          <div className="mt-8 flex flex-wrap items-center gap-3">
+            <span className="border border-pink bg-deep px-2 py-1 font-pixel text-xs tracking-widest">
+              MISSION_04
             </span>
-          </p>
-          <div className="mt-3 flex gap-1" aria-hidden="true">
-            {roadmap.map(([label, done]) => (
-              <span
-                key={label}
-                className={`h-2 flex-1 ${done ? "bg-pink shadow-[0_0_8px_rgba(255,46,136,0.7)]" : "bg-line"}`}
-              />
-            ))}
+            <span className="border border-pink px-2 py-1 font-pixel text-[10px] tracking-widest text-pink">
+              <span className="blink mr-2 inline-block h-2 w-2 bg-pink" />
+              IN PROGRESS
+            </span>
           </div>
-          <ul className="mt-5 space-y-2 font-mono text-sm">
-            {roadmap.map(([label, done]) => (
-              <li key={label} className={done ? "text-fg" : "text-muted"}>
-                <span className={done ? "text-cyan" : "text-muted"}>{done ? "[x]" : "[ ]"}</span> {label}
+
+          <p className="glow mt-6 font-pixel text-xs tracking-widest text-pink">
+            ACTIVE MISSION
+          </p>
+          <h1 className="mt-2 text-3xl font-bold sm:text-4xl">
+            Sistema de Atendimento (NestJS)
+          </h1>
+          <p className="mt-4 max-w-2xl leading-relaxed text-muted">
+            Backend de atendimento com contatos, conversas e mensagens, feito
+            para aprender a stack moderna de back-end. Um endpoint simula o
+            recebimento de mensagens, como um webhook, e os clientes conectados
+            são avisados em tempo real por WebSocket. O projeto está no começo e
+            este arquivo mostra o que já existe e o que vem pela frente.
+          </p>
+
+          <div className="mt-8 flex flex-wrap gap-4">
+            <a
+              href="https://github.com/ViniciusEckert/projetoNestjs"
+              target="_blank"
+              rel="noreferrer"
+              className="btn btn-solid"
+            >
+              GITHUB
+            </a>
+          </div>
+        </section>
+
+        <section>
+          <p className={tag}>{"// PROGRESS"}</p>
+          <h2 className={heading}>ROADMAP</h2>
+
+          <div className="px mt-6 p-5">
+            <p className="flex justify-between font-pixel text-[10px] tracking-widest">
+              <span className="text-pink">MISSION PROGRESS</span>
+              <span className="text-muted">
+                {doneCount}/{roadmap.length} COMPLETE
+              </span>
+            </p>
+            <div className="mt-3 flex gap-1" aria-hidden="true">
+              {roadmap.map(([label, done]) => (
+                <span
+                  key={label}
+                  className={`h-2 flex-1 ${done ? "bg-pink shadow-[0_0_8px_rgba(255,46,136,0.7)]" : "bg-line"}`}
+                />
+              ))}
+            </div>
+            <ul className="mt-5 space-y-2 font-mono text-sm">
+              {roadmap.map(([label, done]) => (
+                <li key={label} className={done ? "text-fg" : "text-muted"}>
+                  <span className={done ? "text-cyan" : "text-muted"}>
+                    {done ? "[x]" : "[ ]"}
+                  </span>{" "}
+                  {label}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+
+        <section>
+          <p className={tag}>{"// TECH"}</p>
+          <h2 className={heading}>STACK</h2>
+
+          <ul className="mt-6 flex flex-wrap gap-2 font-mono text-xs">
+            {stack.map((s) => (
+              <li
+                key={s}
+                className="border border-line bg-deep px-3 py-1.5 transition-colors hover:border-pink hover:text-pink"
+              >
+                {s}
+              </li>
+            ))}
+            {planned.map((s) => (
+              <li
+                key={s}
+                className="border border-dashed border-line px-3 py-1.5 text-muted/60"
+              >
+                {s} <span className="text-cyan/70">NEXT</span>
               </li>
             ))}
           </ul>
-        </div>
-      </section>
+          <p className="mt-3 font-mono text-xs text-muted">
+            Chips tracejados com NEXT são tecnologias planejadas, ainda não
+            implementadas.
+          </p>
+        </section>
 
-      <section>
-        <p className={tag}>{"// TECH"}</p>
-        <h2 className={heading}>STACK</h2>
+        <section>
+          <p className={tag}>{"// ARCHITECTURE"}</p>
+          <h2 className={heading}>PLANNED MODULES</h2>
 
-        <ul className="mt-6 flex flex-wrap gap-2 font-mono text-xs">
-          {stack.map((s) => (
-            <li
-              key={s}
-              className="border border-line bg-deep px-3 py-1.5 transition-colors hover:border-pink hover:text-pink"
-            >
-              {s}
-            </li>
-          ))}
-          {planned.map((s) => (
-            <li key={s} className="border border-dashed border-line px-3 py-1.5 text-muted/60">
-              {s} <span className="text-cyan/70">NEXT</span>
-            </li>
-          ))}
-        </ul>
-        <p className="mt-3 font-mono text-xs text-muted">
-          Chips tracejados com NEXT são tecnologias planejadas, ainda não implementadas.
-        </p>
-      </section>
+          <div className="mt-6 grid gap-4 sm:grid-cols-2">
+            {modules.map(([name, desc]) => (
+              <div key={name} className="px p-4">
+                <h3 className="font-pixel text-sm tracking-widest text-red">
+                  {name}
+                </h3>
+                <p className="mt-2 text-sm text-muted">{desc}</p>
+              </div>
+            ))}
+          </div>
+        </section>
 
-      <section>
-        <p className={tag}>{"// ARCHITECTURE"}</p>
-        <h2 className={heading}>PLANNED MODULES</h2>
+        <section>
+          <p className={tag}>{"// DECISIONS"}</p>
+          <h2 className={heading}>DESIGN DECISIONS</h2>
 
-        <div className="mt-6 grid gap-4 sm:grid-cols-2">
-          {modules.map(([name, desc]) => (
-            <div key={name} className="px p-4">
-              <h3 className="font-pixel text-sm tracking-widest text-red">{name}</h3>
-              <p className="mt-2 text-sm text-muted">{desc}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section>
-        <p className={tag}>{"// DECISIONS"}</p>
-        <h2 className={heading}>DESIGN DECISIONS</h2>
-
-        <ul className="mt-6 space-y-4">
-          {decisions.map(([title, desc]) => (
-            <li key={title} className="border-l-2 border-red pl-5">
-              <p className="font-semibold">{title}</p>
-              <p className="text-sm text-muted">{desc}</p>
-            </li>
-          ))}
-        </ul>
-        <p className="mt-4 font-mono text-xs text-muted">
-          Algumas decisões ainda serão aplicadas conforme o roadmap avança.
-        </p>
-      </section>
-    </div>
+          <ul className="mt-6 space-y-4">
+            {decisions.map(([title, desc]) => (
+              <li key={title} className="border-l-2 border-red pl-5">
+                <p className="font-semibold">{title}</p>
+                <p className="text-sm text-muted">{desc}</p>
+              </li>
+            ))}
+          </ul>
+          <p className="mt-4 font-mono text-xs text-muted">
+            Algumas decisões ainda serão aplicadas conforme o roadmap avança.
+          </p>
+        </section>
+      </div>
     </>
   );
 }
